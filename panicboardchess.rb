@@ -1,4 +1,5 @@
 require "sinatra/json"
+require "open-uri"
 
 class PanicBoardChess < Sinatra::Base
   get "/" do
@@ -6,6 +7,13 @@ class PanicBoardChess < Sinatra::Base
   end
 
   get "/problem.json" do
-    json start: "4rk2/ppp2nR1/3p1P1p/2r3p1/6P1/2P3BP/P7/4R1K1 w - - 0 1"
+    homepage = Nokogiri::HTML(open("http://chess.com"))
+    puzzle_url = homepage.css("a").find{ |a| a.text =~ /Click to Solve/ }.attributes["href"].value
+    puzzle_page = Nokogiri::HTML(open(puzzle_url))
+    puzzle = puzzle_page.at_css(".dailyPuzzleDiv").children.first.content
+
+    start = puzzle.match(/\[FEN \"([^\"]+)/)[1]
+
+    json start: start
   end
 end
