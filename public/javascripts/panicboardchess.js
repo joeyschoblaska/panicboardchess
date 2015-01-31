@@ -8,6 +8,7 @@
         return board = new ChessBoard("chessboard", {
           position: data.start,
           draggable: true,
+          orientation: game.turn() === "w" ? "white" : "black",
           onDragStart: (function(_this) {
             return function(source, piece, position, orientation) {
               return !(game.game_over() || (game.turn() === "w" && piece.search(/^b/) !== -1) || (game.turn() === "b" && piece.search(/^w/) !== -1));
@@ -15,20 +16,30 @@
           })(this),
           onDrop: (function(_this) {
             return function(source, target) {
-              var move;
+              var move, oldPosition, response;
+              oldPosition = game.fen();
               move = game.move({
                 from: source,
                 to: target,
                 promotion: "q"
               });
-              if (move === null) {
+              if (move !== null && move.san === data.moves[0]) {
+                data.moves.shift();
+                if (data.moves.length === 0) {
+                  return setTimeout((function() {
+                    return board.clear();
+                  }), 500);
+                } else {
+                  response = data.moves.shift();
+                  return setTimeout((function() {
+                    game.move(response);
+                    return board.position(game.fen());
+                  }), 250);
+                }
+              } else {
+                game.load(oldPosition);
                 return "snapback";
               }
-            };
-          })(this),
-          onSnapEnd: (function(_this) {
-            return function() {
-              return board.position(game.fen);
             };
           })(this)
         });
