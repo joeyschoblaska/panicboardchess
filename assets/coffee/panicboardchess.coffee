@@ -1,0 +1,2 @@
+$ ->
+  new ChessBoard("chessboard", "start")
