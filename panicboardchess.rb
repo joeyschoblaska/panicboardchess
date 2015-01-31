@@ -1,5 +1,5 @@
 class PanicBoardChess < Sinatra::Base
   get "/" do
-    "hello"
+    haml :index
   end
 end
