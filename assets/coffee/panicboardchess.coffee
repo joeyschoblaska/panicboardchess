@@ -37,10 +37,16 @@ window.setProblem = (data) ->
             board.position(game.fen())
           ), 250
 
-      else
-        # illegal or incorrect move
+      else if move == null
+        # illegal move
         game.load(oldPosition)
         return "snapback"
+      else
+        # incorrect move
+        setTimeout (->
+          game.load(oldPosition)
+          board.position(oldPosition)
+        ), 250
 
 window.requestPosition = ->
   $.ajax

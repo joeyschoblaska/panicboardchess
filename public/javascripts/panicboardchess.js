@@ -36,9 +36,14 @@
                 return board.position(game.fen());
               }), 250);
             }
-          } else {
+          } else if (move === null) {
             game.load(oldPosition);
             return "snapback";
+          } else {
+            return setTimeout((function() {
+              game.load(oldPosition);
+              return board.position(oldPosition);
+            }), 250);
           }
         };
       })(this)
