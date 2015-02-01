@@ -1,7 +1,9 @@
 source "https://rubygems.org"
 
 gem "coffee-script"
+gem "dalli"
 gem "haml"
+gem "memcachier"
 gem "nokogiri"
 gem "pry"
 gem "rake"
