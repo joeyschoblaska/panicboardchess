@@ -17,7 +17,7 @@ class PanicBoardChess < Sinatra::Base
       puzzle = puzzle_page.at_css(".dailyPuzzleDiv").children.first.content
 
       start = puzzle.match(/\[FEN \"([^\"]+)/)[1]
-      moves_string = puzzle.match(/\r\n\r\n([^\r]+)/)[1]
+      moves_string = puzzle.match(/\r\n\r\n([^\*]+)/)[1]
       moves = moves_string.split(/(\s|\d{1,2}\.{1,3})/).select{ |m| m =~ /^\D/ && m =~ /^\S/ }
 
       {start: start, moves: moves}
